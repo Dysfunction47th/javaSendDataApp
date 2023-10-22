@@ -29,5 +29,22 @@ public class Server {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        
+    }
+
+    // 클라이언트로 파일을 전송하는 메서드
+    private static void sendFileToClient(Socket clientSocket, String filePath) throws IOException {
+        OutputStream outputStream = clientSocket.getOutputStream();
+        FileInputStream fileInputStream = new FileInputStream(filePath);
+
+        byte[] buffer = new byte[1024];
+        int bytesRead;
+        while ((bytesRead = fileInputStream.read(buffer)) != -1) {
+            outputStream.write(buffer, 0, bytesRead);
+        }
+
+        fileInputStream.close();
+        outputStream.close();
     }
 }

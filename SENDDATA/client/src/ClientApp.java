@@ -3,6 +3,7 @@ import java.net.Socket;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -15,6 +16,9 @@ public class ClientApp extends JFrame {
     private JFileChooser fileChooser;
     private JButton receiveButton;
 
+    // Socket 변수를 추가
+    private Socket socket;
+    
     public ClientApp() {
         super("File Send Client");
         setSize(400, 200);
@@ -39,7 +43,8 @@ public class ClientApp extends JFrame {
         receiveButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                receiveFile();
+                // receiveFile();
+                requestFile();
             }
         });
 
@@ -92,101 +97,148 @@ public class ClientApp extends JFrame {
             e.printStackTrace();
         }
 
-        // 데이터베이스 연결 정보 설정
-        String dbUrl = "jdbc:mariadb://localhost:3306/filenamedb"; // MariaDB 서버 주소와 데이터베이스 이름
-        String dbUser = "root"; // 데이터베이스 사용자 이름
-        String dbPassword = "root"; // 데이터베이스 암호
+        // // 데이터베이스 연결 정보 설정
+        // String dbUrl = "jdbc:mariadb://localhost:3306/filenamedb"; // MariaDB 서버 주소와 데이터베이스 이름
+        // String dbUser = "root"; // 데이터베이스 사용자 이름
+        // String dbPassword = "root"; // 데이터베이스 암호
 
-        // 파일 이름
-        String fileNameSql = fileName;
+        // // 파일 이름
+        // String fileNameSql = fileName;
 
-        Connection connection = null;
-        try {
-            // 데이터베이스 연결
-            connection = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
+        // Connection connection = null;
+        // try {
+        //     // 데이터베이스 연결
+        //     connection = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
 
-            // SQL 쿼리 작성 (파일 이름을 files 테이블에 삽입)
-            String insertQuery = "INSERT INTO fname ( " + fileNameSql + " ) VALUES (?)";
+        //     // SQL 쿼리 작성 (파일 이름을 files 테이블에 삽입)
+        //     String insertQuery = "INSERT INTO fname ( " + fileNameSql + " ) VALUES (?)";
 
-            // PreparedStatement를 사용하여 SQL 쿼리 실행
-            PreparedStatement preparedStatement = connection.prepareStatement(insertQuery);
-            preparedStatement.setString(1, fileName);
+        //     // PreparedStatement를 사용하여 SQL 쿼리 실행
+        //     PreparedStatement preparedStatement = connection.prepareStatement(insertQuery);
+        //     preparedStatement.setString(1, fileName);
 
-            // SQL 쿼리 실행
-            int rowsAffected = preparedStatement.executeUpdate();
+        //     // SQL 쿼리 실행
+        //     int rowsAffected = preparedStatement.executeUpdate();
 
-            if (rowsAffected > 0) {
-                System.out.println("파일 이름이 데이터베이스에 성공적으로 저장되었습니다.");
-            } else {
-                System.out.println("파일 이름 저장에 실패했습니다.");
-            }
+        //     if (rowsAffected > 0) {
+        //         System.out.println("파일 이름이 데이터베이스에 성공적으로 저장되었습니다.");
+        //     } else {
+        //         System.out.println("파일 이름 저장에 실패했습니다.");
+        //     }
 
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            // 연결 종료
-            if (connection != null) {
-                try {
-                    connection.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
+        // } catch (SQLException e) {
+        //     e.printStackTrace();
+        // } finally {
+        //     // 연결 종료
+        //     if (connection != null) {
+        //         try {
+        //             connection.close();
+        //         } catch (SQLException e) {
+        //             e.printStackTrace();
+        //         }
+        //     }
+        // }
 
 
     }
     
 
-    private void receiveFile() {
-        // JFileChooser 객체를 생성합니다.
-        JFileChooser fileChooser = new JFileChooser();
+    // private void receiveFile() {
+    //     // JFileChooser 객체를 생성합니다.
+    //     JFileChooser fileChooser = new JFileChooser();
     
-        // JFileChooser의 기본 위치를 설정합니다.
-        fileChooser.setCurrentDirectory(new File("D:\\coding_study\\javaSendDataApp\\SENDDATA\\client\\src/dataGet"));
+    //     // JFileChooser의 기본 위치를 설정합니다.
+    //     fileChooser.setCurrentDirectory(new File("D:\\coding_study\\javaSendDataApp\\SENDDATA\\server\\src/data"));
     
-        // JFileChooser의 기본 파일 이름을 설정합니다.
+    //     // JFileChooser의 기본 파일 이름을 설정합니다.
+    //     fileChooser.setSelectedFile(new File("receivedFile.txt"));
+    
+    //     // JFileChooser 대화 상자를 표시합니다.
+    //     int result = fileChooser.showSaveDialog(this);
+    
+    //     // 사용자가 "저장" 버튼을 클릭한 경우
+    //     if (result == JFileChooser.APPROVE_OPTION) {
+    //         // 선택한 파일을 가져옵니다.
+    //         File selectedFile = fileChooser.getSelectedFile();
+    
+    //         try {
+    //             // 서버에 연결합니다.
+    //             Socket socket = new Socket("localhost", 12345);
+    //             System.out.println("Connected to server.");
+    
+    //             // 서버로부터 데이터를 읽을 입력 스트림을 생성합니다.
+    //             InputStream inputStream = socket.getInputStream();
+    
+    //             // 선택한 파일에 데이터를 쓸 출력 스트림을 생성합니다.
+    //             FileOutputStream fileOutputStream = new FileOutputStream(selectedFile);
+    
+    //             // 서버로부터 데이터를 읽고 선택한 파일에 씁니다.
+    //             byte[] buffer = new byte[1024];
+    //             int bytesRead;
+    //             while ((bytesRead = inputStream.read(buffer)) != -1) {
+    //                 fileOutputStream.write(buffer, 0, bytesRead);
+    //             }
+    
+    //             // 출력 스트림과 입력 스트림을 닫습니다.
+    //             fileOutputStream.close();
+    //             inputStream.close();
+    //             socket.close();
+    
+    //             // 파일이 성공적으로 수신되었음을 사용자에게 알립니다.
+    //             JOptionPane.showMessageDialog(this, "File received successfully.");
+    //         } catch (IOException e) {
+    //             e.printStackTrace();
+    //         }
+    //     }
+    // }
+    
+    private void requestFile() {
+        fileChooser.setCurrentDirectory(new File("D:\\coding_study\\javaSendDataApp\\SENDDATA\\server\\src/data"));
         fileChooser.setSelectedFile(new File("receivedFile.txt"));
-    
-        // JFileChooser 대화 상자를 표시합니다.
-        int result = fileChooser.showSaveDialog(this);
-    
-        // 사용자가 "저장" 버튼을 클릭한 경우
+        int result = fileChooser.showOpenDialog(this);
+
         if (result == JFileChooser.APPROVE_OPTION) {
-            // 선택한 파일을 가져옵니다.
             File selectedFile = fileChooser.getSelectedFile();
-    
-            try {
-                // 서버에 연결합니다.
-                Socket socket = new Socket("localhost", 12345);
-                System.out.println("Connected to server.");
-    
-                // 서버로부터 데이터를 읽을 입력 스트림을 생성합니다.
-                InputStream inputStream = socket.getInputStream();
-    
-                // 선택한 파일에 데이터를 쓸 출력 스트림을 생성합니다.
-                FileOutputStream fileOutputStream = new FileOutputStream(selectedFile);
-    
-                // 서버로부터 데이터를 읽고 선택한 파일에 씁니다.
-                byte[] buffer = new byte[1024];
-                int bytesRead;
-                while ((bytesRead = inputStream.read(buffer)) != -1) {
-                    fileOutputStream.write(buffer, 0, bytesRead);
+
+            SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
+                @Override
+                protected Void doInBackground() throws Exception {
+                    try {
+                        if (socket == null || socket.isClosed()) {
+                            socket = new Socket("localhost", 12345);
+                            System.out.println("Connected to server.");
+                        }
+
+                        String requestFileName = selectedFile.getName(); // 선택한 파일 이름
+
+                        OutputStream fileNameOutputStream = socket.getOutputStream();
+                        fileNameOutputStream.write(requestFileName.getBytes());
+                        fileNameOutputStream.flush();
+
+                        String savePath = "D:\\coding_study\\javaSendDataApp\\SENDDATA\\client\\src/dataGet\\" + requestFileName;
+                        FileOutputStream fileOutputStream = new FileOutputStream(savePath);
+
+                        InputStream inputStream = socket.getInputStream();
+                        byte[] buffer = new byte[1024];
+                        int bytesRead;
+                        while ((bytesRead = inputStream.read(buffer)) != -1) {
+                            fileOutputStream.write(buffer, 0, bytesRead);
+                        }
+
+                        fileOutputStream.close();
+                        JOptionPane.showMessageDialog(ClientApp.this, "File received successfully: " + requestFileName);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    return null;
                 }
-    
-                // 출력 스트림과 입력 스트림을 닫습니다.
-                fileOutputStream.close();
-                inputStream.close();
-                socket.close();
-    
-                // 파일이 성공적으로 수신되었음을 사용자에게 알립니다.
-                JOptionPane.showMessageDialog(this, "File received successfully.");
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            };
+
+            worker.execute();
         }
     }
-
+    
+    
     public static void main(String[] args) {
         new ClientApp();
     }
