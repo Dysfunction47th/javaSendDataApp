@@ -143,54 +143,7 @@ public class ClientApp extends JFrame {
     }
     
 
-    // private void receiveFile() {
-    //     // JFileChooser 객체를 생성합니다.
-    //     JFileChooser fileChooser = new JFileChooser();
-    
-    //     // JFileChooser의 기본 위치를 설정합니다.
-    //     fileChooser.setCurrentDirectory(new File("D:\\coding_study\\javaSendDataApp\\SENDDATA\\server\\src/data"));
-    
-    //     // JFileChooser의 기본 파일 이름을 설정합니다.
-    //     fileChooser.setSelectedFile(new File("receivedFile.txt"));
-    
-    //     // JFileChooser 대화 상자를 표시합니다.
-    //     int result = fileChooser.showSaveDialog(this);
-    
-    //     // 사용자가 "저장" 버튼을 클릭한 경우
-    //     if (result == JFileChooser.APPROVE_OPTION) {
-    //         // 선택한 파일을 가져옵니다.
-    //         File selectedFile = fileChooser.getSelectedFile();
-    
-    //         try {
-    //             // 서버에 연결합니다.
-    //             Socket socket = new Socket("localhost", 12345);
-    //             System.out.println("Connected to server.");
-    
-    //             // 서버로부터 데이터를 읽을 입력 스트림을 생성합니다.
-    //             InputStream inputStream = socket.getInputStream();
-    
-    //             // 선택한 파일에 데이터를 쓸 출력 스트림을 생성합니다.
-    //             FileOutputStream fileOutputStream = new FileOutputStream(selectedFile);
-    
-    //             // 서버로부터 데이터를 읽고 선택한 파일에 씁니다.
-    //             byte[] buffer = new byte[1024];
-    //             int bytesRead;
-    //             while ((bytesRead = inputStream.read(buffer)) != -1) {
-    //                 fileOutputStream.write(buffer, 0, bytesRead);
-    //             }
-    
-    //             // 출력 스트림과 입력 스트림을 닫습니다.
-    //             fileOutputStream.close();
-    //             inputStream.close();
-    //             socket.close();
-    
-    //             // 파일이 성공적으로 수신되었음을 사용자에게 알립니다.
-    //             JOptionPane.showMessageDialog(this, "File received successfully.");
-    //         } catch (IOException e) {
-    //             e.printStackTrace();
-    //         }
-    //     }
-    // }
+
     
     private void requestFile() {
         fileChooser.setCurrentDirectory(new File("D:\\coding_study\\javaSendDataApp\\SENDDATA\\server\\src/data"));
