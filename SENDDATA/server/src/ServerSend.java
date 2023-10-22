@@ -15,7 +15,7 @@ public class ServerSend {
             System.out.println("클라이언트가 연결되었습니다.");
 
             // 파일을 읽어 클라이언트에게 전송
-            String filePath = "data/sample.txt";
+            String filePath = "D:\\\\coding_study\\\\javaSendDataApp\\\\SENDDATA\\\\server\\\\src\\\\data/test3.txt";
             File file = new File(filePath);
             FileInputStream fileInputStream = new FileInputStream(file);
             OutputStream outputStream = clientSocket.getOutputStream();

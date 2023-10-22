@@ -14,20 +14,17 @@ public class Server {
             System.out.println("클라이언트가 연결되었습니다.");
 
             // 파일 수신
-            String savePath = "data/received_file.txt";
-            FileOutputStream fileOutputStream = new FileOutputStream(savePath);
+            String savePath = "D:\\coding_study\\javaSendDataApp\\SENDDATA\\server\\src\\data/test3.txt";
             InputStream inputStream = clientSocket.getInputStream();
 
             byte[] buffer = new byte[1024];
             int bytesRead;
             while ((bytesRead = inputStream.read(buffer)) != -1) {
+                FileOutputStream fileOutputStream = new FileOutputStream(savePath, true);
                 fileOutputStream.write(buffer, 0, bytesRead);
+                fileOutputStream.close();
             }
 
-            fileOutputStream.close();
-            inputStream.close();
-            clientSocket.close();
-            serverSocket.close();
             System.out.println("파일 수신 및 저장 완료");
         } catch (IOException e) {
             e.printStackTrace();
