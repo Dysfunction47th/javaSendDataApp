@@ -1,22 +1,25 @@
 import java.io.*;
+import java.net.ServerSocket;
 import java.net.Socket;
 
-public class Client {
+public class ServerSend {
     public static void main(String[] args) {
-        String serverAddress = "localhost";
-        int serverPort = 12345;
+        int port = 12347; // 사용할 포트 번호
 
         try {
-            Socket socket = new Socket(serverAddress, serverPort);
-            System.out.println("서버에 연결되었습니다.");
+            ServerSocket serverSocket = new ServerSocket(port);
+            System.out.println("서버가 시작되었습니다. 클라이언트 연결 대기 중...");
 
-            // 전송할 파일 선택
+            // 클라이언트 연결 대기
+            Socket clientSocket = serverSocket.accept();
+            System.out.println("클라이언트가 연결되었습니다.");
+
+            // 파일을 읽어 클라이언트에게 전송
             String filePath = "data/sample.txt";
             File file = new File(filePath);
             FileInputStream fileInputStream = new FileInputStream(file);
-            OutputStream outputStream = socket.getOutputStream();
+            OutputStream outputStream = clientSocket.getOutputStream();
 
-            // 파일 전송
             byte[] buffer = new byte[1024];
             int bytesRead;
             while ((bytesRead = fileInputStream.read(buffer)) != -1) {
@@ -25,7 +28,8 @@ public class Client {
 
             outputStream.close();
             fileInputStream.close();
-            socket.close();
+            clientSocket.close();
+            serverSocket.close();
             System.out.println("파일 전송 완료");
         } catch (IOException e) {
             e.printStackTrace();
