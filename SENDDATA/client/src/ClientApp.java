@@ -4,10 +4,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 
 public class ClientApp extends JFrame {
 
@@ -57,7 +53,9 @@ public class ClientApp extends JFrame {
 
     private void sendFile() {
         String filePath = filePathTextField.getText();
-        fileChooser.setCurrentDirectory(new File("D:\\coding_study\\javaSendDataApp\\SENDDATA"));
+        // fileChooser.setCurrentDirectory(new File("D:\\coding_study\\javaSendDataApp\\SENDDATA"));
+        fileChooser.setCurrentDirectory(new File("C:\\check\\javaSendDataApp\\SENDDATA"));
+        
         if (filePath.isEmpty()) {
             int result = fileChooser.showOpenDialog(sendButton);
             if (result == JFileChooser.APPROVE_OPTION) {
@@ -97,47 +95,6 @@ public class ClientApp extends JFrame {
             e.printStackTrace();
         }
 
-        // // 데이터베이스 연결 정보 설정
-        // String dbUrl = "jdbc:mariadb://localhost:3306/filenamedb"; // MariaDB 서버 주소와 데이터베이스 이름
-        // String dbUser = "root"; // 데이터베이스 사용자 이름
-        // String dbPassword = "root"; // 데이터베이스 암호
-
-        // // 파일 이름
-        // String fileNameSql = fileName;
-
-        // Connection connection = null;
-        // try {
-        //     // 데이터베이스 연결
-        //     connection = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
-
-        //     // SQL 쿼리 작성 (파일 이름을 files 테이블에 삽입)
-        //     String insertQuery = "INSERT INTO fname ( " + fileNameSql + " ) VALUES (?)";
-
-        //     // PreparedStatement를 사용하여 SQL 쿼리 실행
-        //     PreparedStatement preparedStatement = connection.prepareStatement(insertQuery);
-        //     preparedStatement.setString(1, fileName);
-
-        //     // SQL 쿼리 실행
-        //     int rowsAffected = preparedStatement.executeUpdate();
-
-        //     if (rowsAffected > 0) {
-        //         System.out.println("파일 이름이 데이터베이스에 성공적으로 저장되었습니다.");
-        //     } else {
-        //         System.out.println("파일 이름 저장에 실패했습니다.");
-        //     }
-
-        // } catch (SQLException e) {
-        //     e.printStackTrace();
-        // } finally {
-        //     // 연결 종료
-        //     if (connection != null) {
-        //         try {
-        //             connection.close();
-        //         } catch (SQLException e) {
-        //             e.printStackTrace();
-        //         }
-        //     }
-        // }
 
 
     }
@@ -146,7 +103,9 @@ public class ClientApp extends JFrame {
 
     
     private void requestFile() {
-        fileChooser.setCurrentDirectory(new File("D:\\coding_study\\javaSendDataApp\\SENDDATA\\server\\src/data"));
+        // fileChooser.setCurrentDirectory(new File("D:\\coding_study\\javaSendDataApp\\SENDDATA\\server\\src/data"));
+        fileChooser.setCurrentDirectory(new File("C:\\check\\javaSendDataApp\\SENDDATA\\client\\src\\data"));
+
         fileChooser.setSelectedFile(new File("receivedFile.txt"));
         int result = fileChooser.showOpenDialog(this);
 
@@ -168,7 +127,9 @@ public class ClientApp extends JFrame {
                         fileNameOutputStream.write(requestFileName.getBytes());
                         fileNameOutputStream.flush();
 
-                        String savePath = "D:\\coding_study\\javaSendDataApp\\SENDDATA\\client\\src/dataGet\\" + requestFileName;
+                        // String savePath = "D:\\coding_study\\javaSendDataApp\\SENDDATA\\client\\src/dataGet\\" + requestFileName;
+                        String savePath = "C:\\check\\javaSendDataApp\\SENDDATA\\client\\src\\dataGet\\" + requestFileName;
+
                         FileOutputStream fileOutputStream = new FileOutputStream(savePath);
 
                         InputStream inputStream = socket.getInputStream();

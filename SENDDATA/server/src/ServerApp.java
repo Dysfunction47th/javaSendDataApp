@@ -33,7 +33,9 @@ String fileName = new String(fileNameBytes, 0, bytesRead).trim(); // 파일 이�
 System.out.println("Server receives: " + fileName); // 클라이언트로부터 받은 파일 이름 확인
 
 // 파일 저장
-String savePath = "D:\\coding_study\\javaSendDataApp\\SENDDATA\\server\\src\\data\\" + fileName;
+// String savePath = "D:\\coding_study\\javaSendDataApp\\SENDDATA\\server\\src\\data\\" + fileName;
+String savePath = "C:\\check\\javaSendDataApp\\SENDDATA\\server\\src\\data\\" + fileName;
+
 FileOutputStream fileOutputStream = new FileOutputStream(savePath);
 
 byte[] buffer = new byte[1024];
